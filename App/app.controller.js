@@ -1,28 +1,35 @@
 var app = angular.module('userApp', []);
 
-app.controller('userCtrl', function($scope, $timeout) {
-    $scope.employees = [
-        { id: 1, name: 'Nugraha', position: 'Developer', office: 'Jakarta', age: 20, startDate: '2024/07/01', salary: '$100' },
-        { id: 2, name: 'Forsaken', position: 'Designer', office: 'Singapore', age: 25, startDate: '2020/02/15', salary: '$5000' },
-    ];
+app.controller('userCtrl', function($scope, $http, $timeout) {
+    var apiUrl = 'http://127.0.0.1:8000';
+
+    $scope.employees = [];
+
+    $scope.fetchEmployees = function() {
+        $http.get(apiUrl + '/api/employee/' + '?format=json')
+            .then(function(response) {
+                $scope.employees = response.data;
+                reinitializeDataTable();
+            }, function(error) {
+                console.error('Error fetching employees:', error);
+            });
+    };
 
     $scope.newEmployee = {};
-
     $scope.addEmployee = function() {
+        $scope.newEmployee.startDate = moment($scope.newEmployee.startDate).format('YYYY-MM-DD');
+
         if ($scope.newEmployee.name && $scope.newEmployee.position && $scope.newEmployee.office &&
             $scope.newEmployee.age && $scope.newEmployee.startDate && $scope.newEmployee.salary) {
-            $scope.employees.push({
-                id: $scope.employees.length + 1,
-                name: $scope.newEmployee.name,
-                position: $scope.newEmployee.position,
-                office: $scope.newEmployee.office,
-                age: $scope.newEmployee.age,
-                startDate: $scope.newEmployee.startDate,
-                salary: $scope.newEmployee.salary
-            });
-            $('#addEmployeeModal').modal('hide');
-            $scope.newEmployee = {};
-            reinitializeDataTable();
+            $http.post(apiUrl + '/api/employee/add/?format=json', $scope.newEmployee )
+                .then(function(response) {
+                    $scope.employees.push(response.data);
+                    $('#addEmployeeModal').modal('hide');
+                    $scope.newEmployee = {};
+                    reinitializeDataTable();
+                }, function(error) {
+                    console.error('Error adding employee:', error);
+                });
         } else {
             alert('Please fill in all fields.');
         }
@@ -36,9 +43,14 @@ app.controller('userCtrl', function($scope, $timeout) {
     $scope.deleteEmployee = function(employee) {
         var index = $scope.employees.indexOf(employee);
         if (index !== -1) {
-            $scope.employees.splice(index, 1);
-            alert('Deleted employee: ' + employee.name);
-            reinitializeDataTable();
+            $http.delete(apiUrl + '/api/employee/' + employee.id + '/?format=json')
+                .then(function(response) {
+                    $scope.employees.splice(index, 1);
+                    alert('Deleted employee: ' + employee.name);
+                    reinitializeDataTable();
+                }, function(error) {
+                    console.error('Error deleting employee:', error);
+                });
         }
     };
 
@@ -46,11 +58,14 @@ app.controller('userCtrl', function($scope, $timeout) {
         $('#userTable').DataTable();
     }, 0);
 
-      // Function to reinitialize the DataTable
-  function reinitializeDataTable() {
-    $timeout(function() {
-      $('#userTable').DataTable().clear().destroy();
-      $('#userTable').DataTable();
-    }, 0);
-  }
+    // Function to reinitialize the DataTable
+    function reinitializeDataTable() {
+        $timeout(function() {
+            $('#userTable').DataTable().clear().destroy();
+            $('#userTable').DataTable();
+        }, 0);
+    }
+
+    // Fetch employees on controller initialization
+    $scope.fetchEmployees();
 });
