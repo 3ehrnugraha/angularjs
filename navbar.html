@@ -1,0 +1,24 @@
+<div id="navbar">
+  <nav class="navbar navbar-expand-lg navbar-light bg-info">
+    <a class="navbar-brand" href="#">Management System</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        <a class="nav-item nav-link active" href="/">Employees</a>
+        <a class="nav-item nav-link" href="#">Projects</a>
+        <a class="nav-item nav-link" href="#">Division</a>
+        <a class="nav-item nav-link btn btn-primary" href="/#!/login" ng-show="!isAuthenticated">Login</a>
+        <a class="nav-item nav-link btn btn-danger" ng-click="logout()" ng-show="isAuthenticated">Log Out</a>
+      </div>
+    </div>
+  </nav>
+  <div class="container mt-4">
+    <h2>Welcome to My App</h2>
+    <p ng-show="isAuthenticated">You are logged in.</p>
+    <p ng-show="!isAuthenticated">Please log in to access add features.</p>
+    <p>{{isAuthenticated}}.</p>
+
+  </div>
+</div>

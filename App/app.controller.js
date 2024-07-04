@@ -1,4 +1,26 @@
-var app = angular.module('userApp', []);
+var app = angular.module('userApp', ['ngRoute']);
+
+app.config(['$routeProvider', function($routeProvider) {
+    $routeProvider
+    .when('/', {
+        templateUrl: 'Page/employee.html',
+        controller: 'userCtrl',
+        // resolve: {
+        //     auth: ['$location', 'AuthService', function($location, AuthService) {
+        //         if (!AuthService.isAuthenticated()) {
+        //             $location.path('/login');
+        //         }
+        //     }]
+        // }
+    })
+    .when('/login', {
+        templateUrl: 'Page/login.html',
+        controller: 'AuthController'
+    })
+    .otherwise({
+        redirectTo: '/login'
+    });
+}]);
 
 app.controller('userCtrl', function($scope, $http, $timeout) {
     var apiUrl = 'http://127.0.0.1:8000';
@@ -6,7 +28,7 @@ app.controller('userCtrl', function($scope, $http, $timeout) {
     $scope.employees = [];
 
     $scope.fetchEmployees = function() {
-        $http.get(apiUrl + '/api/employee/' + '?format=json')
+        $http.get(apiUrl + '/employee/' + '?format=json')
             .then(function(response) {
                 $scope.employees = response.data;
                 reinitializeDataTable();
@@ -21,7 +43,7 @@ app.controller('userCtrl', function($scope, $http, $timeout) {
 
         if ($scope.newEmployee.name && $scope.newEmployee.position && $scope.newEmployee.office &&
             $scope.newEmployee.age && $scope.newEmployee.startDate && $scope.newEmployee.salary) {
-            $http.post(apiUrl + '/api/employee/add/?format=json', $scope.newEmployee )
+            $http.post(apiUrl + '/employee/?format=json', $scope.newEmployee )
                 .then(function(response) {
                     $scope.employees.push(response.data);
                     $('#addEmployeeModal').modal('hide');
@@ -36,14 +58,23 @@ app.controller('userCtrl', function($scope, $http, $timeout) {
     };
 
     $scope.editEmployee = function(employee) {
-        alert('Edit employee: ' + employee.name);
-        console.log($scope.employees);
+        $scope.editEmployee = $scope.employees.indexOf(employee);
+        if ($scope.editEmployee !== -1) {
+            $http.put(apiUrl + '/employee/' + employee.id + '/?format=json', $scope.editEmployee)
+                .then(function(response) {
+                    $scope.employees.splice(index, 1);
+                    alert('Deleted employee: ' + employee.name);
+                    reinitializeDataTable();
+                }, function(error) {
+                    console.error('Error deleting employee:', error);
+                });
+        }
     };
 
     $scope.deleteEmployee = function(employee) {
         var index = $scope.employees.indexOf(employee);
         if (index !== -1) {
-            $http.delete(apiUrl + '/api/employee/' + employee.id + '/?format=json')
+            $http.delete(apiUrl + '/employee/' + employee.id + '/?format=json')
                 .then(function(response) {
                     $scope.employees.splice(index, 1);
                     alert('Deleted employee: ' + employee.name);

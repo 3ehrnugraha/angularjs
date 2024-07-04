@@ -1,0 +1,129 @@
+<div class="container">
+    <!-- <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addEmployeeModal">Add</button> -->
+    <!-- <div class="modal fade" id="addEmployeeModal" tabindex="-1" role="dialog" aria-labelledby="addEmployeeModalLabel" aria-hidden="true"> -->
+    <div class="modal" id="addEmployeeModal" style="background-color: rgba(0,0,0,0.5);">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addEmployeeModalLabel">Add Employee</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closeModal()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <form ng-submit="addEmployee()">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" class="form-control" id="name" ng-model="newEmployee.name" ng-required="true" required>
+                            <div class="error" ng-show="employeeForm.name.$touched && employeeForm.name.$invalid">
+                                Please enter a valid name.
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="position">Position</label>
+                            <input type="text" class="form-control" id="position" ng-model="newEmployee.position" ng-required="true" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="office">Office</label>
+                            <input type="text" class="form-control" id="office" ng-model="newEmployee.office" ng-required="true" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="age">Age</label>
+                            <input type="number" class="form-control" id="age" ng-model="newEmployee.age" ng-required="true" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="startDate">Start Date</label>
+                            <input type="date" class="form-control" id="startDate" ng-model="newEmployee.startDate" ng-required="true" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="salary">Salary</label>
+                            <input type="text" class="form-control" id="salary" ng-model="newEmployee.salary" ng-required="true" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Add Employee</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- <h1>DataTable</h1>
+    <table id="userTable" class="display datatable">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Position</th>
+                <th>Office</th>
+                <th>Age</th>
+                <th>Start date</th>
+                <th>Salary</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="employee in employees">
+                <td>{{employee.name}}</td>
+                <td>{{employee.position}}</td>
+                <td>{{employee.office}}</td>
+                <td>{{employee.age}}</td>
+                <td>{{employee.startDate}}</td>
+                <td>{{employee.salary}}</td>
+                <td>
+                    <button class="btn btn-warning" ng-click="editEmployee(employee)">Edit</button>
+                    <button class="btn btn-danger" ng-click="deleteEmployee(employee)">Delete</button>
+                </td>
+            </tr>
+        </tbody>
+    </table> -->
+
+    <h1>Normal Table</h1>
+    <table id="anotherTable" class="display datatable">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Position</th>
+                <th>Office</th>
+                <th>Age</th>
+                <th>Start date</th>
+                <th>Salary</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="employee in employees">
+                <td>{{employee.name}}</td>
+                <td>{{employee.position}}</td>
+                <td>{{employee.office}}</td>
+                <td>{{employee.age}}</td>
+                <td>{{employee.startDate}}</td>
+                <td>{{employee.salary}}</td>
+                <td>
+                    <button class="btn btn-warning" ng-click="editEmployee(employee)">Edit</button>
+                    <button class="btn btn-danger" ng-click="deleteEmployee(employee)">Delete</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <button type="button" class="btn btn-success"  onclick="openModal()">Add Employee</button>
+</div>
+
+<script>
+    // $(document).ready(function() {
+    //     $('#userTable').DataTable();
+    // });
+
+    function openModal() {
+        document.getElementById('addEmployeeModal').style.display = 'block';
+    }
+
+    function closeModal() {
+        document.getElementById('addEmployeeModal').style.display = 'none';
+    }
+
+    document.addEventListener('click', function(event) {
+        var modal = document.getElementById('addEmployeeModal');
+        if (event.target == modal) {
+            closeModal();
+        }
+    });
+</script>
