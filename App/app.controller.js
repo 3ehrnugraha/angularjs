@@ -13,6 +13,10 @@ app.config(['$routeProvider', function($routeProvider) {
         //     }]
         // }
     })
+    .when('/division', {
+        templateUrl: 'Page/division.html',
+        controller: 'divisionController',
+    })
     .when('/login', {
         templateUrl: 'Page/login.html',
         controller: 'AuthController'
@@ -28,7 +32,7 @@ app.controller('userCtrl', function($scope, $http, $timeout) {
     $scope.employees = [];
 
     $scope.fetchEmployees = function() {
-        $http.get(apiUrl + '/employee/' + '?format=json')
+        $http.get(apiUrl + '/api/employees/' + '?format=json')
             .then(function(response) {
                 $scope.employees = response.data;
                 reinitializeDataTable();
@@ -43,7 +47,7 @@ app.controller('userCtrl', function($scope, $http, $timeout) {
 
         if ($scope.newEmployee.name && $scope.newEmployee.position && $scope.newEmployee.office &&
             $scope.newEmployee.age && $scope.newEmployee.startDate && $scope.newEmployee.salary) {
-            $http.post(apiUrl + '/employee/?format=json', $scope.newEmployee )
+            $http.post(apiUrl + '/api/employees/?format=json', $scope.newEmployee )
                 .then(function(response) {
                     $scope.employees.push(response.data);
                     $('#addEmployeeModal').modal('hide');
@@ -57,24 +61,59 @@ app.controller('userCtrl', function($scope, $http, $timeout) {
         }
     };
 
+    $scope.divisions = [];
+    $scope.loadDivisions = function() {
+        $http.get(apiUrl + '/api/divisions/?format=json')
+            .then(function(response) {
+                $scope.divisions = response.data;
+            }, function(error) {
+                console.error('Error fetching divisions:', error);
+            });
+    };
+    
+
+    $scope.selectedEmployee = {};
     $scope.editEmployee = function(employee) {
-        $scope.editEmployee = $scope.employees.indexOf(employee);
-        if ($scope.editEmployee !== -1) {
-            $http.put(apiUrl + '/employee/' + employee.id + '/?format=json', $scope.editEmployee)
+        $scope.selectedEmployee = angular.copy(employee);
+        $scope.loadDivisions();
+        $('#editEmployeeModal').modal('show');
+    };
+
+    function closeEditModal() {
+        $('#editEmployeeModal').modal('hide');
+        $scope.selectedEmployee = {};
+    }
+    
+    $scope.updateEmployee = function() {
+        $scope.selectedEmployee.startDate = moment($scope.selectedEmployee.startDate).format('YYYY-MM-DD');
+    
+        if ($scope.selectedEmployee.name && $scope.selectedEmployee.position && $scope.selectedEmployee.office &&
+            $scope.selectedEmployee.age && $scope.selectedEmployee.startDate && $scope.selectedEmployee.salary) {
+    
+            var updatedEmployeeData = angular.copy($scope.selectedEmployee);
+            updatedEmployeeData.division = $scope.selectedEmployee.division.id;
+    
+            $http.put(apiUrl + '/api/employees/' + $scope.selectedEmployee.id + '/?format=json', updatedEmployeeData)
                 .then(function(response) {
-                    $scope.employees.splice(index, 1);
-                    alert('Deleted employee: ' + employee.name);
+                    var index = $scope.employees.findIndex(emp => emp.id === $scope.selectedEmployee.id);
+                    if (index !== -1) {
+                        $scope.employees[index] = response.data;
+                    }
+                    closeEditModal();
                     reinitializeDataTable();
                 }, function(error) {
-                    console.error('Error deleting employee:', error);
+                    console.error('Error updating employee:', error);
                 });
+        } else {
+            alert('Please fill in all fields.');
         }
     };
+    
 
     $scope.deleteEmployee = function(employee) {
         var index = $scope.employees.indexOf(employee);
         if (index !== -1) {
-            $http.delete(apiUrl + '/employee/' + employee.id + '/?format=json')
+            $http.delete(apiUrl + '/api/employees/' + employee.id + '/?format=json')
                 .then(function(response) {
                     $scope.employees.splice(index, 1);
                     alert('Deleted employee: ' + employee.name);

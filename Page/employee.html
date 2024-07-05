@@ -47,6 +47,55 @@
         </div>
     </div>
 
+    <div class="modal" id="editEmployeeModal" style="background-color: rgba(0,0,0,0.5);">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editEmployeeModalLabel">Edit Employee</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closeEditModal()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+    
+                <div class="modal-body">
+                    <form ng-submit="updateEmployee()">
+                        <div class="form-group">
+                            <label for="editName">Name</label>
+                            <input type="text" class="form-control" id="editName" ng-model="selectedEmployee.name" ng-required="true" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editPosition">Position</label>
+                            <input type="text" class="form-control" id="editPosition" ng-model="selectedEmployee.position" ng-required="true" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editOffice">Office</label>
+                            <input type="text" class="form-control" id="editOffice" ng-model="selectedEmployee.office" ng-required="true" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editAge">Age</label>
+                            <input type="number" class="form-control" id="editAge" ng-model="selectedEmployee.age" ng-required="true" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editStartDate">Start Date</label>
+                            <input type="date" class="form-control" id="editStartDate" ng-model="selectedEmployee.startDate" ng-required="true" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editSalary">Salary</label>
+                            <input type="text" class="form-control" id="editSalary" ng-model="selectedEmployee.salary" ng-required="true" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editDivision">Division</label>
+                            <select class="form-control" id="editDivision" ng-model="selectedEmployee.division" ng-options="division.name for division in divisions">
+                                <option value="">Select a division</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Update Employee</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
     <!-- <h1>DataTable</h1>
     <table id="userTable" class="display datatable">
         <thead>

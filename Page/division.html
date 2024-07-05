@@ -1,0 +1,125 @@
+<div class="container">
+    <!-- <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addDivisionModal">Add</button> -->
+    <!-- <div class="modal fade" id="addDivisionModal" tabindex="-1" role="dialog" aria-labelledby="addDivisionModalLabel" aria-hidden="true"> -->
+    <div class="modal" id="addDivisionModal" style="background-color: rgba(0,0,0,0.5);">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addDivisionModalLabel">Add Division</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closeModalAddDivision()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <form ng-submit="addDivision()">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" class="form-control" id="name" ng-model="newDivision.name" ng-required="true" required>
+                            <!-- <div class="error" ng-show="divisionForm.name.$touched && divisionForm.name.$invalid">
+                                Please enter a valid name.
+                            </div> -->
+                        </div>
+                        <div class="form-group">
+                            <label for="position">Description</label>
+                            <input type="text" class="form-control" id="position" ng-model="newDivision.description" ng-required="true" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Add Division</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- <h1>DataTable</h1>
+    <table id="userTable" class="display datatable">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Position</th>
+                <th>Office</th>
+                <th>Age</th>
+                <th>Start date</th>
+                <th>Salary</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="division in divisions">
+                <td>{{division.name}}</td>
+                <td>{{division.position}}</td>
+                <td>{{division.office}}</td>
+                <td>{{division.age}}</td>
+                <td>{{division.startDate}}</td>
+                <td>{{division.salary}}</td>
+                <td>
+                    <button class="btn btn-warning" ng-click="editDivision(division)">Edit</button>
+                    <button class="btn btn-danger" ng-click="deleteDivision(division)">Delete</button>
+                </td>
+            </tr>
+        </tbody>
+    </table> -->
+
+    <h1>Normal Table</h1>
+    <table id="anotherTable" class="display datatable">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Division</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="division in divisions">
+                <td>{{division.name}}</td>
+                <td>{{division.description}}</td>
+                <td>
+                    <button class="btn btn-primary" ng-click="showMembers(division)">Members</button>
+                    <button class="btn btn-warning" ng-click="editDivision(division)">Edit</button>
+                    <button class="btn btn-danger" ng-click="deleteDivision(division)">Delete</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <button type="button" class="btn btn-success"  onclick="openModalAddDivision()">Add Division</button>
+</div>
+
+<div class="modal" id="membersModal" style="background-color: rgba(0,0,0,0.5);">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Division Members</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="closeModalMember()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <ul>
+                    <li ng-repeat="employee in selectedDivision.employees">
+                        {{ employee.name }} - {{ employee.position }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // $(document).ready(function() {
+    //     $('#userTable').DataTable();
+    // });
+
+    function openModalAddDivision() {
+        document.getElementById('addDivisionModal').style.display = 'block';
+    }
+
+    function closeModalAddDivision() {
+        document.getElementById('addDivisionModal').style.display = 'none';
+    }
+
+    document.addEventListener('click', function(event) {
+        var modal = document.getElementById('addDivisionModal');
+        if (event.target == modal) {
+            closeModalAddDivision();
+        }
+    });
+</script>
