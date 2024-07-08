@@ -5,21 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Front End</title>
     <link href="Bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="DataTables/datatables.min.css" rel="stylesheet">
+    <!-- <link href="DataTables/datatables.min.css" rel="stylesheet"> -->
+    <link href="uiSelect/select.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
 
     <script src="jQuery/jquery.min.js"></script>
-    <script src="DataTables/datatables.min.js"></script>
+    <!-- <script src="DataTables/datatables.min.js"></script> -->
     <script src="Bootstrap/js/bootstrap.min.js"></script>
     <script src="Bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="Moment/moment.js"></script>
     <script type="text/javascript" src="angularjs/angular.min.js"></script>
     <script type="text/javascript" src="angularjs/angular-route.min.js"></script>
+    <script type="text/javascript" src="angularjs/angular-sanitize.min.js"></script>
+    <script src="uiSelect/select.min.js"></script>
     <script src="app/app.controller.js"></script>
     <script src="app/auth/auth.controller.js"></script>
     <script src="app/auth/auth.service.js"></script>
     <script src="app/auth/auth.interceptor.js"></script>
     <script src="app/division/division.controller.js"></script>
+    <script src="app/project/project.controller.js"></script>
 </head>
 <body ng-controller="userCtrl">
     <header ng-controller="AuthController" ng-include src="'navbar.html'"></header>

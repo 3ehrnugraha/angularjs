@@ -12,17 +12,20 @@
                 </div>
 
                 <div class="modal-body">
-                    <form ng-submit="addDivision()">
-                        <div class="form-group">
+                    <form name="divisionForm" ng-submit="addDivision()" novalidate>
+                        <div class="form-group" ng-class="{ 'has-error': divisionForm.name.$touched && divisionForm.name.$invalid }">
                             <label for="name">Name</label>
-                            <input type="text" class="form-control" id="name" ng-model="newDivision.name" ng-required="true" required>
-                            <!-- <div class="error" ng-show="divisionForm.name.$touched && divisionForm.name.$invalid">
-                                Please enter a valid name.
-                            </div> -->
+                            <input type="text" class="form-control" id="name" name="name" ng-model="newDivision.name" ng-required="true" required>
+                            <div class="invalid-feedback" ng-show="divisionForm.name.$touched && divisionForm.name.$invalid">
+                                Name is required.
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="position">Description</label>
-                            <input type="text" class="form-control" id="position" ng-model="newDivision.description" ng-required="true" required>
+                        <div class="form-group" ng-class="{ 'has-error': divisionForm.description.$touched && divisionForm.description.$invalid }">
+                            <label for="description">Description</label>
+                            <input type="text" class="form-control" id="description" name="description" ng-model="newDivision.description" ng-required="true" required>
+                            <div class="invalid-feedback" ng-show="divisionForm.description.$touched && divisionForm.description.$invalid">
+                                Description is required.
+                            </div>
                         </div>
                         <button type="submit" class="btn btn-primary">Add Division</button>
                     </form>

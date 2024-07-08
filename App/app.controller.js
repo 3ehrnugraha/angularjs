@@ -1,4 +1,4 @@
-var app = angular.module('userApp', ['ngRoute']);
+var app = angular.module('userApp', ['ngRoute', 'ui.select', 'ngSanitize']);
 
 app.config(['$routeProvider', function($routeProvider) {
     $routeProvider
@@ -16,6 +16,10 @@ app.config(['$routeProvider', function($routeProvider) {
     .when('/division', {
         templateUrl: 'Page/division.html',
         controller: 'divisionController',
+    })
+    .when('/project', {
+        templateUrl: 'Page/project.html',
+        controller: 'ProjectController',
     })
     .when('/login', {
         templateUrl: 'Page/login.html',
