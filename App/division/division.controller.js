@@ -3,20 +3,34 @@ angular.module('userApp').controller('divisionController', function($scope, $htt
 
     $scope.divisions = [];
 
-    $scope.fetchDivisions = function() {
-        $http.get(apiUrl + '/api/divisions/' + '?format=json')
-            .then(function(response) {
-                $scope.divisions = response.data;
-                reinitializeDataTable();
-            }, function(error) {
-                console.error('Error fetching divisions:', error);
-            });
+    // $scope.fetchDivisions = function() {
+    //     $http.get(apiUrl + '/api/divisions/' + '?format=json')
+    //         .then(function(response) {
+    //             $scope.divisions = response.data;
+    //             reinitializeDataTable();
+    //         }, function(error) {
+    //             console.error('Error fetching divisions:', error);
+    //         });
+    // };
+
+    $scope.searchParams = {
+        name: '',
+        description: '',
+    };
+
+    $scope.loadDivisions = function() {
+        let params = {};
+        if ($scope.searchParams.name) params.name = $scope.searchParams.name;
+        if ($scope.searchParams.description) params.description = $scope.searchParams.description;
+        $http.get(apiUrl + '/api/divisions/' + '?format=json', { params: params }).then(function(response) {
+            $scope.divisions = response.data;
+        });
     };
 
     $scope.newDivision = {};
     $scope.addDivision = function() {
         if ($scope.newDivision.name && $scope.newDivision.description) {
-            $http.post(apiUrl + '/api//divisions/?format=json', $scope.newDivision )
+            $http.post(apiUrl + '/api/divisions/?format=json', $scope.newDivision )
                 .then(function(response) {
                     $scope.divisions.push(response.data);
                     $('#addDivisionModal').modal('hide');
@@ -71,5 +85,5 @@ angular.module('userApp').controller('divisionController', function($scope, $htt
     }
 
     // Fetch divisions on controller initialization
-    $scope.fetchDivisions();
+    $scope.loadDivisions();
 });
