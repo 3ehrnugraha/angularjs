@@ -1,7 +1,9 @@
-angular.module('userApp').controller('divisionController', function($scope, $http, $timeout) {
+angular.module('userApp').controller('divisionController', function($scope, $http, $timeout, DivisionService) {
     var apiUrl = 'http://127.0.0.1:8000';
 
     $scope.divisions = [];
+    $scope.currentPage = 1;
+    $scope.totalPages = 1;
 
     // $scope.fetchDivisions = function() {
     //     $http.get(apiUrl + '/api/divisions/' + '?format=json')
@@ -18,14 +20,32 @@ angular.module('userApp').controller('divisionController', function($scope, $htt
         description: '',
     };
 
-    $scope.loadDivisions = function() {
+    $scope.loadDivisions = function(page) {
         let params = {};
         if ($scope.searchParams.name) params.name = $scope.searchParams.name;
         if ($scope.searchParams.description) params.description = $scope.searchParams.description;
-        $http.get(apiUrl + '/api/divisions/' + '?format=json', { params: params }).then(function(response) {
-            $scope.divisions = response.data;
+        // $http.get(apiUrl + '/api/divisions/' + '?format=json', { params: params }).then(function(response) {
+        //     $scope.divisions = response.data;
+        // });
+        DivisionService.getData(page, params).then(function(response) {
+            $scope.divisions = response.data.results;
+            $scope.currentPage = page;
+            $scope.totalPages = Math.ceil(response.data.count / response.data.results.length);
         });
     };
+
+    $scope.nextPage = function() {
+        if ($scope.currentPage < $scope.totalPages) {
+            $scope.loadDivisions($scope.currentPage + 1);
+        }
+    };
+
+    $scope.prevPage = function() {
+        if ($scope.currentPage > 1) {
+            $scope.loadDivisions($scope.currentPage - 1);
+        }
+    };
+
 
     $scope.newDivision = {};
     $scope.addDivision = function() {
@@ -85,5 +105,5 @@ angular.module('userApp').controller('divisionController', function($scope, $htt
     }
 
     // Fetch divisions on controller initialization
-    $scope.loadDivisions();
+    $scope.loadDivisions(1);
 });

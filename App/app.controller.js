@@ -17,6 +17,10 @@ app.config(['$routeProvider', function($routeProvider) {
         templateUrl: 'Page/division.html',
         controller: 'divisionController',
     })
+    .when('/dashboard', {
+        templateUrl: 'Page/dashboard.html',
+        controller: 'DashboardController',
+    })
     .when('/project', {
         templateUrl: 'Page/project.html',
         controller: 'ProjectController',
@@ -38,7 +42,7 @@ app.controller('userCtrl', function($scope, $http, $timeout) {
     $scope.fetchEmployees = function() {
         $http.get(apiUrl + '/api/employees/' + '?format=json')
             .then(function(response) {
-                $scope.employees = response.data;
+                $scope.employees = response.data.results;
                 reinitializeDataTable();
             }, function(error) {
                 console.error('Error fetching employees:', error);
@@ -69,7 +73,7 @@ app.controller('userCtrl', function($scope, $http, $timeout) {
     $scope.loadDivisions = function() {
         $http.get(apiUrl + '/api/divisions/?format=json')
             .then(function(response) {
-                $scope.divisions = response.data;
+                $scope.divisions = response.data.results;
             }, function(error) {
                 console.error('Error fetching divisions:', error);
             });

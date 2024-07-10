@@ -12,7 +12,7 @@ angular.module('userApp').controller('ProjectController', function($scope, $http
     $scope.loadProjects = function() {
         $http.get(apiUrl + '/project/' + '?format=json')
             .then(function(response) {
-                $scope.projects = response.data;
+                $scope.projects = response.results;
             }, function(error) {
                 console.error('Error fetching projects:', error);
             });
@@ -21,7 +21,7 @@ angular.module('userApp').controller('ProjectController', function($scope, $http
     $scope.loadEmployees = function() {
         $http.get(apiUrl + '/employees/' + '?format=json')
             .then(function(response) {
-                $scope.employees = response.data;
+                $scope.employees = response.results;
             }, function(error) {
                 console.error('Error fetching employees:', error);
             });
